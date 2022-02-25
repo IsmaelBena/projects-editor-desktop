@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 
 interface ICardData 
 {
+  id: string,
   name: string,
   field: string,
   url: string,
@@ -14,8 +15,8 @@ interface ICardData
 function ProjectCard(props: ICardData) {
 
   return (
-    <Link to={`/project/${props.url}`}>
-      <div className="ProjectCard">
+    <div className="ProjectCard">
+      <Link to={`/edit-project/${props.id}`}>
         <p>{props.name}</p>
         <p>{props.field}</p>
         <div>
@@ -23,8 +24,8 @@ function ProjectCard(props: ICardData) {
             return <p key={index}>{tag}</p>
           })}
         </div>
-      </div>
-    </Link>
+      </Link>
+    </div>
   );
 }
 

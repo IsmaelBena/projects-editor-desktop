@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Routes,
   Route
@@ -10,13 +10,16 @@ import NewProject from './new-project/NewProject';
 import Project from './project/Project';
 
 function App() {
+
+  const [targetProjectID, setTargetProjectID] = useState('');
+
   return (
     <div className="App">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/projects" element={<AllProjects />} />
           <Route path="/new-project" element={<NewProject />} />
-          <Route path="/project/:name" element={<Project />} />
+          <Route path="/edit-project/:id" element={<Project />} />
         </Routes>
     </div>
   );

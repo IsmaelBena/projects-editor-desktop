@@ -4,6 +4,7 @@ import axios from 'axios';
 import ProjectCard from './ProjectCard';
 
 interface ICard {
+  id: string,
   name: string,
   url: string,
   field: string,
@@ -37,18 +38,10 @@ function AllProjects() {
     getData();
   }, [])
 
-  const showProjectNames = () => {
-    return <>
-      {projectCardsData.cardsData.map((card: ICard) => {
-        <p>{card.name}</p>
-      })}
-    </>
-  }
-
   return (
     <div className="AllProjects">
       {!loadingData ? <>
-        {projectCardsData.cardsData.map((card, index) => {<ProjectCard name={card.name} field={card.field} tags={card.tags} url={card.url}/>})}
+        {projectCardsData.cardsData.map((card, index) => <ProjectCard id={card.id} name={card.name} field={card.field} tags={card.tags} url={card.url}/>)}
       </> : <p>loading cards</p>
       }
     </div>
