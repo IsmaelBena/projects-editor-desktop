@@ -114,10 +114,14 @@ function NewProject() {
                 <a href='/'><button>Return to menu</button></a>
             </div>
             <form className='NewProjectForm' onSubmit={e => {e.preventDefault(); handleSubmit();}}>
-                <ProjectNameEntry projectName={projectName} changeName={setProjectName} />
-                <ProjectFieldEntry projectField={projectField} changeField={setProjectField} />
-                <ProjectTagsEntry projectTags={projectTags} changeTags={setProjectTags} />
-                <ProjectProgressEntry projectProgress={projectProgress} changeProgress={setProjectProgress} />
+                <div className='NameProgressDiv'>
+                    <ProjectNameEntry projectName={projectName} changeName={setProjectName} />
+                    <ProjectProgressEntry projectProgress={projectProgress} changeProgress={setProjectProgress} />
+                </div>
+                <div className='FieldTagsDiv'>
+                    <ProjectFieldEntry projectField={projectField} changeField={setProjectField} />
+                    <ProjectTagsEntry projectTags={projectTags} changeTags={setProjectTags} />
+                </div>
                 <ProjectDescriptionEntry projectDescription={projectDescription} changeDescription={setProjectDescription} />
                 <ProjectVideoEntry projectVideo={projectVideo} changeVideo={setProjectVideo} />
                 <ProjectLinksEntry projectLinks={projectLinks} changeLinks={setProjectLinks} />

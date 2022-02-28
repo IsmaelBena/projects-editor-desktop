@@ -13,7 +13,7 @@ function ProjectNameEntry(props: IProjectName) {
   return (
     <div className="ProjectNameEntry FormSegment">
         <label>
-            Project Name:
+            Name:
             <input type='text' value={props.projectName} onChange={e => props.changeName(e.target.value)} />
         </label>
     </div>
@@ -32,7 +32,7 @@ function ProjectFieldEntry(props: IProjectField) {
     return (
         <div className='ProjectField FormSegment'>
             <label>
-                Project Field:
+                Field:
                 <select value={props.projectField} onChange={e => props.changeField(e.target.value)}>
                     {(props.projectField === "unselected") ? <option value="unselected">Select a field</option> : null}
                     <option value="FullStack">Full Stack</option>
@@ -70,7 +70,7 @@ function ProjectTagsEntry(props: IProjectTags) {
     return (
         <div className='FormSegment'>
             <label className='ProjectTags'>
-                Project Tags:
+                Tags:
                 <input type='text' value={newTagToAdd} onChange={e => setNewTagToAdd(e.target.value)}/>
                 <button onClick={e => {e.preventDefault(); handleTags()}}>add new tag</button>
             </label>
@@ -91,7 +91,7 @@ function ProjectProgressEntry(props: IProjectProgress) {
     return (
         <div className='ProjectProgress FormSegment'>
             <label>
-                Project Progress:
+                Progress:
                 <select value={props.projectProgress} onChange={e => props.changeProgress(e.target.value)}>
                     {(props.projectProgress === "unselected") ? <option value="unselected">Select a field</option> : null}
                     <option value="Planning">Planning</option>
@@ -122,18 +122,22 @@ function ProjectDescriptionEntry(props: IProjectDescriptionP) {
             {props.projectDescription.map((desc, index) => 
                 <div key={index.toString()}>
                     <label className='DescriptionEntry'>
-                        new desc entry:
-                        <select value={desc.textType} onChange={e => props.changeDescription(props.projectDescription.filter(currentDesc => {
-                            if (currentDesc === desc) {currentDesc.textType = e.target.value} return currentDesc
-                        }))}>
-                            <option value="header">Header</option>
-                            <option value="body">Body</option>
-                        </select>
-                        <textarea value={desc.text} onChange={e => props.changeDescription(props.projectDescription.filter(currentDesc => {
-                            if (currentDesc === desc) {currentDesc.text = e.target.value} return currentDesc
-                        }))}/>
+                        <div className='DescTxtAndRemoveDiv'>
+                            Description entry:
+                            <button onClick={e => {e.preventDefault(); props.changeDescription(props.projectDescription.filter(currentDesc => currentDesc !== desc))}}>Remove</button>
+                        </div>
+                        <div className='DescContentEntryDiv'>
+                            <select value={desc.textType} onChange={e => props.changeDescription(props.projectDescription.filter(currentDesc => {
+                                if (currentDesc === desc) {currentDesc.textType = e.target.value} return currentDesc
+                            }))}>
+                                <option value="header">Header</option>
+                                <option value="body">Body</option>
+                            </select>
+                            <textarea value={desc.text} onChange={e => props.changeDescription(props.projectDescription.filter(currentDesc => {
+                                if (currentDesc === desc) {currentDesc.text = e.target.value} return currentDesc
+                            }))}/>
+                        </div>
                     </label>
-                    <button onClick={e => {e.preventDefault(); props.changeDescription(props.projectDescription.filter(currentDesc => currentDesc !== desc))}}>Remove</button>
                 </div>
             )}
         </div>

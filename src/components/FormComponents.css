@@ -1,0 +1,124 @@
+.FormSegment
+{
+    padding: 10px;
+    font-size: 42px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 10px;
+}
+
+.FormSegment label
+{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.ProjectNameEntry input
+{
+    width: 700px;
+    height: fit-content;
+    font-size: inherit;
+    margin: 10px;
+}
+
+.ProjectField select
+{
+    width: 300px;
+    height: 42px;
+    font-size: large;
+    margin: 10px;
+}
+
+.ProjectTags
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.ProjectTags input
+{
+    height: 42px;
+    font-size: 30px;
+    margin: 10px;
+}
+
+.TagsContainer
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 500px;
+}
+
+.Tag
+{
+    border: 1px solid black;
+    border-radius: 3px;
+    margin: 5px;
+    padding: 3px;
+    font-size: large;
+}
+
+.Tag:hover
+{
+    border: 1px solid red;
+}
+
+.ProjectDescription
+{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+.ProjectProgress select
+{
+    width: 200px;
+    height: 42px;
+    font-size: large;
+    margin: 10px;
+}
+
+.DescriptionEntry
+{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    font-size: large;
+}
+
+.DescTxtAndRemoveDiv
+{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.DescContentEntryDiv
+{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.DescriptionEntriesContainer
+{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.DescContentEntryDiv textarea
+{
+    min-width: 400px;
+    width: fit-content;
+    height: fit-content;
+}

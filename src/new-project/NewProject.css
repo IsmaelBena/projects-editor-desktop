@@ -9,12 +9,6 @@
     overflow-y: scroll;
 }
 
-.NewProject input
-{
-    font-size: large;
-    margin: 10px;
-}
-
 .NewProjectForm
 {
     width: fit-content;
@@ -24,79 +18,16 @@
     align-items: flex-start;
 }
 
-.FormSegment
-{
-    padding: 10px;
-}
-
-.DescriptionEntriesContainer
-{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.DescriptionEntry
+.NameProgressDiv
 {
     display: flex;
     flex-direction: row;
-    justify-content: center;
     align-items: center;
 }
 
-.ProjectName input
-{
-    width: 500px;
-    height: 50px;
-    font-size: large;
-    margin: 10px;
-}
-
-.ProjectField select
-{
-    width: 200px;
-    height: 50px;
-    font-size: large;
-    margin: 10px;
-}
-
-.ProjectTags
+.FieldTagsDiv
 {
     display: flex;
     flex-direction: row;
-    justify-content: center;
     align-items: center;
-}
-
-.TagsContainer
-{
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-}
-
-.Tag
-{
-    border: 1px solid black;
-    border-radius: 3px;
-    margin: 5px;
-    padding: 3px;
-}
-
-.Tag:hover
-{
-    border: 1px solid red;
-}
-
-.ProjectProgress select
-{
-    width: 200px;
-    height: 50px;
-    font-size: large;
-    margin: 10px;
-}
-
-.Link input
-{
-    width: 500px;
 }
