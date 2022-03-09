@@ -2,6 +2,7 @@ import React, { useState, useEffect} from 'react';
 import './AllProjects.css';
 import axios from 'axios';
 import ProjectCard from './ProjectCard';
+import { Link } from 'react-router-dom';
 
 interface ICard {
   id: string,
@@ -44,6 +45,9 @@ function AllProjects() {
         {projectCardsData.cardsData.map((card, index) => <ProjectCard id={card.id} name={card.name} field={card.field} tags={card.tags} url={card.url}/>)}
       </> : <p>loading cards</p>
       }
+      <div className='HomeLink'>
+        <Link to='/'>Back to hom screen</Link>
+      </div>
     </div>
   );
 }

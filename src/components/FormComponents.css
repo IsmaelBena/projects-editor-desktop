@@ -122,3 +122,40 @@
     width: fit-content;
     height: fit-content;
 }
+
+.ProjectVideo input 
+{
+    height: 42px;
+    width: 700px;
+    font-size: 30px;
+    margin: 10px;
+}
+
+.ProjectLinks
+{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.LinksContainer
+{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.LinkTextAndRemoveDiv
+{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.ProjectLinks input
+{
+    height: 42px;
+    width: 700px;
+    font-size: 30px;
+    margin: 10px;
+}

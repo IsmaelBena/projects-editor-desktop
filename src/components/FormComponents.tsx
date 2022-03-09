@@ -63,7 +63,7 @@ function ProjectTagsEntry(props: IProjectTags) {
 
     const renderTags = () => {
         return <div className='TagsContainer'>
-            {props.projectTags.map(tag => <p className='Tag' onClick={e => props.changeTags(props.projectTags.filter((ftag) => ftag !== tag))} >{tag}</p>)}
+            {props.projectTags.map(tag => <p className='Tag' onClick={e => props.changeTags(props.projectTags.filter((ftag) => ftag !== tag))}>{tag}</p>)}
         </div>
     }
 
@@ -172,40 +172,40 @@ function ProjectVideoEntry(props: IProjectVideo) {
 
 // =========================================================== Project Links ==========================================================================================
 
-interface ILink {
+/*interface ILink {
     linkType: string,
     linkUrl: string
-}
+}*/
 
 interface IProjectLinks {
-    projectLinks: ILink[],
-    changeLinks: (arg: ILink[]) => void
+    projectLinks: string[],
+    changeLinks: (arg: string[]) => void
 }
 
 function ProjectLinksEntry(props: IProjectLinks) {
 
-    const renderLinks = () => {
-        if (props.projectLinks.length > 0) {
-        return <div className='LinksContainer'>
-            <p>Other Links</p>
-            {props.projectLinks.map((link, index) =>
-                <div key={index.toString()}>
-                    <label className='Link'>
-                        link {index + 1}:
-                        <input value={link.linkUrl} onChange={e => props.changeLinks(props.projectLinks.filter(currentLink => {
-                            if (currentLink === link) {currentLink.linkUrl = e.target.value} return currentLink
-                        }))}/>
-                    </label>
-                    <button onClick={e => {e.preventDefault(); props.changeLinks(props.projectLinks.filter(currentLink => currentLink !== link))}}>Remove</button>
-                </div>
-            )}
-        </div>
+    const [newLinkToAdd, setNewLinkToAdd] = useState<string>("");
+
+    const handleLinks = () => {
+        if (!props.projectLinks.includes(newLinkToAdd) && (newLinkToAdd !== "")) {
+            props.changeLinks([...props.projectLinks, newLinkToAdd])
+            setNewLinkToAdd("")
         }
     }
 
+    const renderLinks = () => {
+        return <div className='LinksContainer'>
+            {props.projectLinks.map(link => <p className='Link' onClick={e => props.changeLinks(props.projectLinks.filter((fLink) => fLink !== link))}>{link}</p>)}
+        </div>
+    }
+
     return (
-        <div className='ProjectLinks FormSegment'>
-            <button onClick={e => {e.preventDefault(); props.changeLinks([...props.projectLinks, {linkType: "tobechanges", linkUrl: ""}])}}>add link</button>                 
+        <div className='FormSegment'>
+            <label className='ProjectLinks'>
+                Links:
+                <input type='text' value={newLinkToAdd} onChange={e => setNewLinkToAdd(e.target.value)}/>
+                <button onClick={e => {e.preventDefault(); handleLinks()}}>add new link</button>
+            </label>
             {renderLinks()}
         </div>
     );
