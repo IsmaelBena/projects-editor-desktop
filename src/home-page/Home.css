@@ -10,6 +10,17 @@
     padding: 20px;
 }
 
+.buttonDiv {
+    background-color: blue;
+    width: max-content;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+h1 {
+    color: beige;
+}
+
 .NewProjectLink
 {
     padding: 20px;

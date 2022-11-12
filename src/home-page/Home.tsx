@@ -7,10 +7,10 @@ function Home() {
   return (
     <div className="Home">
       <div className='AllProjectsLink'>
-        <Link to='/projects'>view all projects</Link>
+        <Link to='/projects'><div className='buttonDiv'><h1>view all projects</h1></div></Link>
       </div>
       <div className='NewProjectLink'>
-        <Link to='/new-project'>add new project</Link>
+        <Link to='/new-project'><div className="buttonDiv"><h1>add new project</h1></div></Link>
       </div>
       
     </div>

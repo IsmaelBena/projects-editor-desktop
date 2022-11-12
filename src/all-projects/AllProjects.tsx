@@ -7,9 +7,7 @@ import { Link } from 'react-router-dom';
 interface ICard {
   id: string,
   name: string,
-  url: string,
-  field: string,
-  tags: string[]
+  tech: 
 }
 
 interface IProjectCardsData {
@@ -26,7 +24,7 @@ function AllProjects() {
   const [loadingData, setLoadingData] = useState<boolean>(true);
 
   const getData = async () => {
-    axios.get('http://localhost:8000/projects/cards')
+    axios.get('')
     .then(res => {
       setProjectCardsData(res.data);
       console.log(res.data);
