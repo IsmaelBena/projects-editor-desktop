@@ -26,16 +26,8 @@ function TechnologyCard(props: ITechCardData) {
             <h2>Name: {props.name}</h2>
             <h1>Type: {props.techType}</h1>
             <p>Image File Name: {props.image.fileName}</p>
+            <p>Image Url: {props.image.url}</p>
         </div>
-      <Link to={`/edit-project/${props.id}`}>
-        <p>{props.name}</p>
-        <p>{props.field}</p>
-        <div>
-          {props.tags.map((tag, index) => {
-            return <p key={index}>{tag}</p>
-          })}
-        </div>
-      </Link>
     </div>
   );
 }

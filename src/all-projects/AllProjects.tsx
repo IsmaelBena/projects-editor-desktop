@@ -6,8 +6,7 @@ import { Link } from 'react-router-dom';
 
 interface ICard {
   id: string,
-  name: string,
-  tech: 
+  name: string
 }
 
 interface IProjectCardsData {
@@ -39,13 +38,15 @@ function AllProjects() {
 
   return (
     <div className="AllProjects">
+        <Link to='/'>
+          <div className='HomeLink'>
+            <p>← Back to home screen</p>
+          </div>
+        </Link>
       {!loadingData ? <>
-        {projectCardsData.cardsData.map((card, index) => <ProjectCard id={card.id} name={card.name} field={card.field} tags={card.tags} url={card.url}/>)}
+        {projectCardsData.cardsData.map((card, index) => <h2>card placeholder</h2>)}
       </> : <p>loading cards</p>
       }
-      <div className='HomeLink'>
-        <Link to='/'>Back to hom screen</Link>
-      </div>
     </div>
   );
 }

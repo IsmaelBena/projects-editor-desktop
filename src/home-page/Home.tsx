@@ -7,12 +7,11 @@ function Home() {
   return (
     <div className="Home">
       <div className='AllProjectsLink'>
-        <Link to='/projects'><div className='buttonDiv'><h1>view all projects</h1></div></Link>
+        <Link to='/projects'><div className='buttonDiv'><h1>Projects</h1></div></Link>
       </div>
       <div className='NewProjectLink'>
-        <Link to='/new-project'><div className="buttonDiv"><h1>add new project</h1></div></Link>
-      </div>
-      
+        <Link to='/technologies'><div className="buttonDiv"><h1>Technologies</h1></div></Link>
+      </div>      
     </div>
   );
 }
