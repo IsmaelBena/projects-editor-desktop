@@ -9,23 +9,34 @@ interface ICard {
   name: string
 }
 
-interface IProjectCardsData {
-  cardsData: ICard[],
-  filterData: {
-    fields: string[],
-    tags: string[]
-  }
+interface IProjectEntry {
+  _id: string,
+  name: string,
+  date: Date,
+  status: string,
+  tech: string[]
+  description: string[]
+  links?: {
+        linkType: string,
+        url: string
+    }[]
 }
+
 
 function AllProjects() {
 
-  const [projectCardsData, setProjectCardsData] = useState<IProjectCardsData>({cardsData: [], filterData: {fields: [], tags: []}});
+  const [resData, setResData] = useState<IProjectEntry[]>([])
+  const [projectCardsData, setProjectCardsData] = useState<ICard[]>([]);
   const [loadingData, setLoadingData] = useState<boolean>(true);
 
   const getData = async () => {
-    axios.get('')
+    axios.get('http://localhost:8000/projects')
     .then(res => {
-      setProjectCardsData(res.data);
+      setResData(res.data)
+      let tempCardData: ICard[] = res.data.map((value: IProjectEntry) => {
+        return {id: value._id, name: value.name}
+      });
+      setProjectCardsData(tempCardData);
       console.log(res.data);
       setLoadingData(false);
     })
@@ -43,8 +54,13 @@ function AllProjects() {
             <p>← Back to home screen</p>
           </div>
         </Link>
+        <Link to='/project/new'>
+          <div className='HomeLink'>
+            <p><b>+</b>New Project</p>
+          </div>
+        </Link>
       {!loadingData ? <>
-        {projectCardsData.cardsData.map((card, index) => <h2>card placeholder</h2>)}
+        {projectCardsData.map((card) => <ProjectCard id={card.id} name={card.name}/>)}
       </> : <p>loading cards</p>
       }
     </div>

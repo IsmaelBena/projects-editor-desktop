@@ -2,9 +2,10 @@
 {
   padding: 0;
   margin: 0;
+  overflow: hidden;
 }
 
-.HomeLink {
+.NavButton {
   background-color: blueviolet;
   border-radius: 5px;
   margin: 5px;
@@ -12,6 +13,9 @@
   width: max-content;
 }
 
-.HomeLink > p {
+.NavButton > * {
   color: white;
+}
+
+.NavButton > h2 {
 }

@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import './FormComponents.css'
+import TechnologyMiniCard from './TechnologyMiniCards'
 
 // =========================================================== Project Name ==========================================================================================
 
 interface IProjectName {
-    projectName: string,
+    name: string,
     changeName: (arg: string) => void
 }
 
@@ -14,90 +15,98 @@ function ProjectNameEntry(props: IProjectName) {
     <div className="ProjectNameEntry FormSegment">
         <label>
             Name:
-            <input type='text' value={props.projectName} onChange={e => props.changeName(e.target.value)} />
+            <input type='text' value={props.name} onChange={e => props.changeName(e.target.value)} />
         </label>
     </div>
   );
 }
 
-// =========================================================== Project Field =========================================================================================
+// =========================================================== Project Status =========================================================================================
 
-interface IProjectField {
-    projectField: string,
-    changeField: (arg: string) => void
+interface IProjectStatus {
+    status: string,
+    changeStatus: (arg: string) => void
 }
 
-function ProjectFieldEntry(props: IProjectField) {
+function ProjectStatusEntry(props: IProjectStatus) {
 
     return (
-        <div className='ProjectField FormSegment'>
+        <div className='ProjectStatusEntry FormSegment'>
             <label>
-                Field:
-                <select value={props.projectField} onChange={e => props.changeField(e.target.value)}>
-                    {(props.projectField === "unselected") ? <option value="unselected">Select a field</option> : null}
-                    <option value="FullStack">Full Stack</option>
-                    <option value="GameDevelopment">Game Development</option>
+                Status:
+                <select value={props.status} onChange={e => props.changeStatus(e.target.value)}>
+                    {(props.status === "unselected") ? <option value="unselected">Select a Status</option> : null}
+                    <option value="Planning">Planning</option>
+                    <option value="In-Development">In Development</option>
+                    <option value="Complete">Complete</option>
                 </select>
             </label>                        
         </div>
     );
 }
 
-// =========================================================== Project Tags ==========================================================================================
+// =========================================================== Project Tech ==========================================================================================
 
-interface IProjectTags {
-    projectTags: string[],
-    changeTags: (arg: string[]) => void
+interface ICardData {
+    name: string,
+    id: string
 }
 
-function ProjectTagsEntry(props: IProjectTags) {
-    
-    const [newTagToAdd, setNewTagToAdd] = useState<string>("");
+interface ITechData {
+    cardsData: ICardData[],
+    activeTech: string[],
+    changeTech: (args: string[]) => void
+}
 
-    const handleTags = () => {
-        if (!props.projectTags.includes(newTagToAdd) && (newTagToAdd !== "")) {
-            props.changeTags([...props.projectTags, newTagToAdd])
-            setNewTagToAdd("")
+function ProjectTechEntry(props: ITechData) {
+
+    const findName = (id: string) => {
+        let res = props.cardsData.find((card) => card.id === id)
+        if (res !== undefined) {
+            return res.name
+        } else {
+            return "Weird bug happening here..."
         }
     }
 
-    const renderTags = () => {
-        return <div className='TagsContainer'>
-            {props.projectTags.map(tag => <p className='Tag' onClick={e => props.changeTags(props.projectTags.filter((ftag) => ftag !== tag))}>{tag}</p>)}
+    const renderActiveTech = () => {
+        return <div className="ActiveTech">
+            {props.activeTech.map((tech, index) =>
+                <div onClick={() => {props.changeTech(props.activeTech.filter((Ftech) => Ftech !== tech))}}>
+                    <TechnologyMiniCard id={tech} name={findName(tech)} redBG={""}/>
+                </div>
+            )}
         </div>
     }
 
     return (
-        <div className='FormSegment'>
-            <label className='ProjectTags'>
-                Tags:
-                <input type='text' value={newTagToAdd} onChange={e => setNewTagToAdd(e.target.value)}/>
-                <button onClick={e => {e.preventDefault(); handleTags()}}>add new tag</button>
-            </label>
-            {renderTags()}
+        <div className="ProjectTechEntry FormSegment">
+            {renderActiveTech()}
+            <div className="AllTech">
+            {props.cardsData.map((tech) => 
+                <div onClick={() => {props.changeTech([...props.activeTech, tech.id])}}>
+                    <TechnologyMiniCard id={tech.id} name={tech.name} redBG={(props.activeTech.find(Ltech => tech.id === Ltech) !== undefined) ? " redBG" : ""}/>
+                </div>
+            )}
+            </div>
         </div>
-    );
+    )
 }
 
-// =========================================================== Project Progress ======================================================================================
+// =========================================================== Project Date ======================================================================================
 
-interface IProjectProgress {
-    projectProgress: string,
-    changeProgress: (arg: string) => void
+interface IProjectDate {
+    date: string,
+    changeDate: (arg: Date) => void
 }
 
-function ProjectProgressEntry(props: IProjectProgress) {
+function ProjectDateEntry(props: IProjectDate) {
 
     return (
-        <div className='ProjectProgress FormSegment'>
+        <div className='ProjectDateEntry FormSegment'>
             <label>
-                Progress:
-                <select value={props.projectProgress} onChange={e => props.changeProgress(e.target.value)}>
-                    {(props.projectProgress === "unselected") ? <option value="unselected">Select a field</option> : null}
-                    <option value="Planning">Planning</option>
-                    <option value="InDevelopment">In Development</option>
-                    <option value="Complete">Complete</option>
-                </select>
+                Date: {props.date}
+                <input type="date" value={props.date} onChange={e => props.changeDate(new Date(e.target.value))} />
             </label>
         </div>
     );
@@ -105,37 +114,28 @@ function ProjectProgressEntry(props: IProjectProgress) {
 
 // =========================================================== Project Description =====================================================================================
 
+
 interface IProjectDescription {
-    textType: string,
-    text: string
+    description: string[],
+    changeDescription: (arg: string[]) => void
 }
 
-interface IProjectDescriptionP {
-    projectDescription: IProjectDescription[],
-    changeDescription: (arg: IProjectDescription[]) => void
-}
-
-function ProjectDescriptionEntry(props: IProjectDescriptionP) {
+function ProjectDescriptionEntry(props: IProjectDescription) {
 
     const renderDescInputs = () => {
         return <div className='DescriptionEntriesContainer'>
-            {props.projectDescription.map((desc, index) => 
+            {props.description.map((desc, index) => 
                 <div key={index.toString()}>
                     <label className='DescriptionEntry'>
                         <div className='DescTxtAndRemoveDiv'>
-                            Description entry:
-                            <button onClick={e => {e.preventDefault(); props.changeDescription(props.projectDescription.filter(currentDesc => currentDesc !== desc))}}>Remove</button>
+                            Text:
+                            <button onClick={e => {e.preventDefault(); props.changeDescription(props.description.filter((currentDesc, i) => i !== index))}}>Remove</button>
                         </div>
                         <div className='DescContentEntryDiv'>
-                            <select value={desc.textType} onChange={e => props.changeDescription(props.projectDescription.filter(currentDesc => {
-                                if (currentDesc === desc) {currentDesc.textType = e.target.value} return currentDesc
-                            }))}>
-                                <option value="header">Header</option>
-                                <option value="body">Body</option>
-                            </select>
-                            <textarea value={desc.text} onChange={e => props.changeDescription(props.projectDescription.filter(currentDesc => {
-                                if (currentDesc === desc) {currentDesc.text = e.target.value} return currentDesc
+                            <textarea value={desc} onChange={e => props.changeDescription(props.description.map((currentDesc, i) => {
+                                if (i === index) {currentDesc = e.target.value} return currentDesc
                             }))}/>
+                            {desc}
                         </div>
                     </label>
                 </div>
@@ -145,67 +145,49 @@ function ProjectDescriptionEntry(props: IProjectDescriptionP) {
 
     return (
         <div className='ProjectDescription FormSegment'>
-            <button onClick={e => {e.preventDefault(); props.changeDescription([...props.projectDescription, {textType: "header", text: ""}])}}>add to description</button>
+            <button onClick={e => {e.preventDefault(); props.changeDescription([...props.description, ""])}}>add to description</button>
             {renderDescInputs()}
-        </div>
-    );
-}
-
-// =========================================================== Project Video ==========================================================================================
-
-interface IProjectVideo {
-    projectVideo: string,
-    changeVideo: (arg: string) => void
-}
-
-function ProjectVideoEntry(props: IProjectVideo) {
-
-    return (
-        <div className='ProjectVideo FormSegment'>
-            <label>
-                Video Link:
-                <input type='text' value={props.projectVideo} onChange={e => props.changeVideo(e.target.value)}/>
-            </label>
         </div>
     );
 }
 
 // =========================================================== Project Links ==========================================================================================
 
-/*interface ILink {
-    linkType: string,
-    linkUrl: string
-}*/
-
 interface IProjectLinks {
-    projectLinks: string[],
-    changeLinks: (arg: string[]) => void
+    links: {linkType: string, url: string}[],
+    changeLinks: (arg: {linkType: string, url: string}[]) => void
 }
 
 function ProjectLinksEntry(props: IProjectLinks) {
 
-    const [newLinkToAdd, setNewLinkToAdd] = useState<string>("");
+    const [newLinkUrl, setNewLinkUrl] = useState<string>("");
+    const [newLinkType, setNewLinkType] = useState<string>("")
 
     const handleLinks = () => {
-        if (!props.projectLinks.includes(newLinkToAdd) && (newLinkToAdd !== "")) {
-            props.changeLinks([...props.projectLinks, newLinkToAdd])
-            setNewLinkToAdd("")
+        if (props.links.find(link => link.url === newLinkUrl) === undefined) {
+            props.changeLinks([...props.links, {linkType: newLinkType, url: newLinkUrl}])
+            setNewLinkType("")
+            setNewLinkUrl("")
         }
     }
 
     const renderLinks = () => {
         return <div className='LinksContainer'>
-            {props.projectLinks.map(link => <p className='Link' onClick={e => props.changeLinks(props.projectLinks.filter((fLink) => fLink !== link))}>{link}</p>)}
+            {props.links.map(link => <p className='Link'>{link.linkType}: {link.url}</p>)}
         </div>
     }
 
     return (
-        <div className='FormSegment'>
-            <label className='ProjectLinks'>
-                Links:
-                <input type='text' value={newLinkToAdd} onChange={e => setNewLinkToAdd(e.target.value)}/>
-                <button onClick={e => {e.preventDefault(); handleLinks()}}>add new link</button>
+        <div className='FormSegment ProjectLinks'>
+            <label>
+                Type:
+                <input type='text' value={newLinkType} onChange={e => setNewLinkType(e.target.value)}/>
             </label>
+            <label>
+                Url:
+                <input type='text' value={newLinkUrl} onChange={e => setNewLinkUrl(e.target.value)}/>
+            </label>
+            <button disabled={((newLinkType === "") || (newLinkUrl === ""))} onClick={e => {e.preventDefault(); handleLinks()}}>add new link</button>
             {renderLinks()}
         </div>
     );
@@ -215,10 +197,9 @@ function ProjectLinksEntry(props: IProjectLinks) {
 
 export {
     ProjectNameEntry,
-    ProjectFieldEntry,
-    ProjectTagsEntry,
-    ProjectProgressEntry,
+    ProjectStatusEntry,
+    ProjectDateEntry,
     ProjectDescriptionEntry,
-    ProjectVideoEntry,
-    ProjectLinksEntry
+    ProjectLinksEntry,
+    ProjectTechEntry
 };

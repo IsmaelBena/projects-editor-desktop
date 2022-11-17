@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { ProjectNameEntry, ProjectFieldEntry, ProjectTagsEntry, ProjectProgressEntry, ProjectDescriptionEntry, ProjectVideoEntry, ProjectLinksEntry } from '../components/FormComponents';
+import { ProjectNameEntry, ProjectDescriptionEntry,ProjectLinksEntry } from '../components/FormComponents';
 import './NewProject.css'
 
 interface IProjectDescription {
@@ -103,7 +103,7 @@ function NewProject() {
 
     useEffect(() => {
         updateProjectEntry();
-    }, [projectName, projectTags, projectField, projectProgress, projectDescription, projectVideo, projectLinks]);
+    }, []);
 
     return (
         <div className="NewProject">
@@ -111,17 +111,6 @@ function NewProject() {
                 <a href='/'><button>Return to menu</button></a>
             </div>
             <form className='NewProjectForm' onSubmit={e => {e.preventDefault(); handleSubmit();}}>
-                <div className='NameProgressDiv'>
-                    <ProjectNameEntry projectName={projectName} changeName={setProjectName} />
-                    <ProjectProgressEntry projectProgress={projectProgress} changeProgress={setProjectProgress} />
-                </div>
-                <div className='FieldTagsDiv'>
-                    <ProjectFieldEntry projectField={projectField} changeField={setProjectField} />
-                    <ProjectTagsEntry projectTags={projectTags} changeTags={setProjectTags} />
-                </div>
-                <ProjectDescriptionEntry projectDescription={projectDescription} changeDescription={setProjectDescription} />
-                <ProjectVideoEntry projectVideo={projectVideo} changeVideo={setProjectVideo} />
-                <ProjectLinksEntry projectLinks={projectLinks} changeLinks={setProjectLinks} />
                 <div className='SubmitButtonDiv FormSegment'>
                     <input type='submit' value='Submit'/>
                 </div>

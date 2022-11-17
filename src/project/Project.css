@@ -2,5 +2,38 @@
 {
     width: 100vw;
     height: 100vh;
-    background-color: aquamarine;
+    background-color: rgb(207, 207, 207);
+    display: flex;
+    flex-direction: row;
+}
+
+.Project > form
+{
+    width: 100%;
+    height: 100%;
+    background-color: rgb(207, 207, 207);
+    display: flex;
+    flex-direction: column;
+}
+
+.NonTechDiv {
+    width: max-content;
+}
+
+.NonTechDiv > * {
+    width: max-content;
+}
+
+.FormInputs {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.ProjectTech {
+    width: max-content;
+}
+
+.EditingButtons {
+    margin-left: 20px;
 }

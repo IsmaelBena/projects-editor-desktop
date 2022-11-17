@@ -1,7 +1,7 @@
 .FormSegment
 {
     padding: 10px;
-    font-size: 42px;
+    font-size: 28px;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -123,14 +123,6 @@
     height: fit-content;
 }
 
-.ProjectVideo input 
-{
-    height: 42px;
-    width: 700px;
-    font-size: 30px;
-    margin: 10px;
-}
-
 .ProjectLinks
 {
     display: flex;
@@ -158,4 +150,26 @@
     width: 700px;
     font-size: 30px;
     margin: 10px;
+}
+
+.ProjectTechEntry {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    border: solid black 2px;
+    max-width: 900px;
+}
+
+.ActiveTech {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.AllTech {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    border-top: 1px solid black;
+    padding-top: 5px;
 }

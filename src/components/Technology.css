@@ -1,0 +1,41 @@
+.TechnologyCard {
+    width: max-content;
+    background-color: antiquewhite;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    margin: 5px;
+}
+
+.techCardHeader {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+.techCardHeader > *{
+    padding: 0px 5px;
+    margin: 0px 5px;
+    background-color: aqua;
+}
+
+.techCardBody > *{
+    margin: 5px;
+}
+
+.TechnologyMiniCard {
+    width: max-content;
+    margin: 5px;
+}
+
+.techCardID > * {
+    font-size: 12px;
+}
+
+.techCardName > * {
+    font-size: 20px;
+}
+
+.redBG {
+    background-color: red;
+}

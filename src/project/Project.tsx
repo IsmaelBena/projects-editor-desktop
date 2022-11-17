@@ -2,27 +2,30 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import './Project.css';
 import axios from 'axios';
-import { ProjectDescriptionEntry, ProjectFieldEntry, ProjectLinksEntry, ProjectNameEntry, ProjectProgressEntry, ProjectTagsEntry, ProjectVideoEntry } from '../components/FormComponents';
+import { ProjectDescriptionEntry, ProjectDateEntry, ProjectLinksEntry, ProjectNameEntry, ProjectStatusEntry, ProjectTechEntry} from '../components/FormComponents';
 import { Link } from 'react-router-dom';
 
-interface IProjectDescription {
-  textType: string,
-  text: string
-}
-
 interface IProjectEntry {
-  name?: string,
-  url?: string,
-  field?: string,
-  tags?: string[],
-  progress?: string,
-  description?: IProjectDescription[],
-  video?: string,
-  otherLinks?: string[]
+  name: string,
+  date: Date,
+  status: string,
+  tech: string[],
+  description: string[],
+  links?: {
+        linkType: string,
+        url: string
+    }[]
 }
 
-interface IID {
-  id: string
+interface ITechData 
+{
+  _id: string,
+  name: string,
+  techType: string,
+  image: {
+    url?: string,
+    fileName: string
+  }
 }
 
 function Project() {
@@ -32,253 +35,198 @@ function Project() {
   const [loadingData, setLoadingData] = useState(true)
   const { id } = useParams<string>();
 
-  const urlRegex = new RegExp('^[a-zA-z0-9-_~ ]*$');
+  const [projectData, setProjectData] = useState<IProjectEntry>({
+    name: "",
+    date: new Date(2000,1,12),
+    status: "",
+    tech: [],
+    description: []
+  })
 
-  const [projectName, setProjectName] = useState<string>("")
-  const [newProjectName, setNewProjectName] = useState<string>("")
+  const [newProjectData, setNewProjectData] = useState<IProjectEntry>({
+    name: "",
+    date: new Date(2000,1,12),
+    status: "",
+    tech: [],
+    description: [],
+    links: []
+  })
 
-  const [projectTags, setProjectTags] = useState<string[]>([])
-  const [newProjectTags, setNewProjectTags] = useState<string[]>([])
+  const [techData, setTechData] = useState<ITechData[]>([])
+  const [techCardsData, setTechCardsData] = useState<{id: string, name: string}[]>([])
 
-  const [projectField, setProjectField] = useState<string>("unselected")
-  const [newProjectField, setNewProjectField] = useState<string>("unselected")
+  const [newName, setNewName] = useState<string>("")
+  const [newDate, setNewDate] = useState<Date>(new Date(2000,1,12))
+  const [newDateStr, setNewDateStr] = useState<string>(`2000-01-12`)
+  const [newStatus, setNewStatus] = useState<string>("unselected")
+  const [newTech, setNewTech] = useState<string[]>([])
+  const [newDescription, setNewDescription] = useState<string[]>([])
+  const [newLinks, setNewLinks] = useState<{linkType: string, url: string}[]>([])
+  const [editing, setEditing] = useState<boolean>(false)
 
-  const [projectProgress, setProjectProgress] = useState<string>("unselected")
-  const [newProjectProgress, setNewProjectProgress] = useState<string>("unselected")
-
-  const [projectDescription, setProjectDescription] = useState<IProjectDescription[]>([])
-  const [newProjectDescription, setNewProjectDescription] = useState<IProjectDescription[]>([])
-
-  const [projectVideo, setProjectVideo] = useState<string>("")
-  const [newProjectVideo, setNewProjectVideo] = useState<string>("")
-
-  const [projectLinks, setProjectLinks] = useState<string[]>([])
-  const [newProjectLinks, setNewProjectLinks] = useState<string[]>([])
-
-  const [projectData, setProjectData] = useState<IProjectEntry>();
-
-  const [pageEditingState, setPageEditingState] = useState<boolean[]>([false, false, false, false, false, false, false])
-
-  const getProjectData = async (id: any) => {
-    console.log(id);
-    axios.get(`http://localhost:8000/projects/edit-project/${id}`)
+  const getRequiredData = (id: any) => {
+    if (id === "new") {
+      setEditing(true)
+    } else {
+      axios.get(`http://localhost:8000/projects/${id}`)
+      .then(res => {
+        setProjectData({...res.data});
+        setNewName(res.data.name)
+        setNewDate(res.data.date)
+        setNewStatus(res.data.status)
+        setNewTech(res.data.tech)
+        setNewDescription(res.data.description)
+        setNewLinks(res.data.links)
+      }) 
+    }
+    axios.get("http://localhost:8000/technologies")
     .then(res => {
-      setProjectData(res.data);
-      console.log(res.data);
-      setProjectName(res.data.name)
-      setNewProjectName(res.data.name)
-
-      setProjectTags(res.data.tags)
-      setNewProjectTags(res.data.tags)
-
-      setProjectField(res.data.field)
-      setNewProjectField(res.data.field)
-
-      setProjectProgress(res.data.progress)
-      setNewProjectProgress(res.data.progress)
-
-      setProjectDescription(res.data.description)
-      setNewProjectDescription(res.data.description)
-
-      setProjectVideo(res.data.video)
-      setNewProjectVideo(res.data.video)
-      
-      setProjectLinks(res.data.otherLinks)
-      setNewProjectLinks(res.data.otherLinks)
-      
+      setTechData([...res.data]);
+      let tempCards = res.data.map((data: ITechData) => {
+        console.log("?",data);
+        return {id: data._id, name: data.name}
+      })
+      setTechCardsData([...tempCards])
       setLoadingData(false);
     })
   }
 
-  const generateProjectUrl = (): string => {
-    let tempUrl = projectName;
-    tempUrl = tempUrl.toLowerCase();
-    tempUrl = tempUrl.replaceAll(" ", "-")
-    return tempUrl;
-  }
+  useEffect(() => {
+    getRequiredData(id)
+  }, [])
 
   const checkFields = (): Boolean => {
     console.log("checking fields")
-    if (projectName === "") {
+    if (newName === "") {
       console.log("No project name provided")
       return false
     }
-    if (!urlRegex.test(projectName))
-    {
-      console.log("invalid character in name: name should include letter, numbers and/or - _ ~")
+    if (newDate === new Date(2000,1,12)) {
+      console.log("Data Not Added")
       return false
     }
-    if (projectTags.length < 1) {
-      console.log("No tags provided")
+    if (newStatus === "unselected") {
+      console.log("No status provided")
       return false
     }
-    if (projectField === "unselected") {
-      console.log("No field provided")
+    if (newTech.length < 1) {
+      console.log("No tech provided")
       return false
     }
-    if (projectProgress === "unselected") {
-      console.log("No progress state provided")
-      return false
-    }
-    if (projectDescription.length < 1) {
+    if (newDescription.length < 1) {
       console.log("No description provided")
       return false
     }
     return true
   }
 
-  const updateProjectData = (): void => {
-    console.log("update msg fired")
+  const handleSubmit = (): void => {
+    console.log("Submitting")
     if (checkFields()) {
-      setProjectData({
-        name: projectName,
-        url: generateProjectUrl(),
-        field: projectField,
-        tags: projectTags,
-        progress: projectProgress,
-        description: projectDescription,
-        video: projectVideo,
-        otherLinks: projectLinks
-    })}
+      if (id === "new") {
+        postData({name: newName, date: newDate, status: newStatus, tech: newTech, description: newDescription, links: newLinks})
+      } else {
+        putData({name: newName, date: newDate, status: newStatus, tech: newTech, description: newDescription, links: newLinks})
+      }
+    }
     else {
       console.log("project unable to update yet")
     }
   }
 
-  const handleSubmit = () => {
-    console.log('Pushing changes to api')
-    console.log("submit msg fired")
-    if (projectData === undefined) console.log("Project var undefined?")
-    else if (!checkFields()) console.log("cannot submit yet, some entry is not valid")
+  const postData = (newData: IProjectEntry) => {
+    console.log('POSTing data to api')
+    if (!checkFields()) console.log("cannot submit yet, some entry is not valid")
     else {
-      axios.put(`http://localhost:8000/projects/edit-project/${id}`, projectData)
-      .then(res => console.log(res)).catch(err => console.log(err.message))
+      if (newData.links !== undefined) {
+        axios.post(`http://localhost:8000/projects`, newData)
+        .then(res => console.log(res)).catch(err => console.log(err.message))
+      } else {
+        delete newData.links
+        axios.post(`http://localhost:8000/projects`, newData)
+        .then(res => console.log(res)).catch(err => console.log(err.message))
+      }
     }
   }
 
-  const deleteProject = (id: any): void => {
-    axios.delete(`http://localhost:8000/projects/project/${id}`)
+  const putData = (newData: IProjectEntry) => {
+    console.log('PUTing data to api')
+    if (!checkFields()) console.log("cannot submit yet, some entry is not valid")
+    else {
+      if (newData.links !== undefined) {
+        axios.put(`http://localhost:8000/projects/edit/${id}`, newData)
+        .then(res => console.log(res)).catch(err => console.log(err.message))
+      } else {
+        delete newData.links
+        axios.put(`http://localhost:8000/projects/edit/${id}`, newData)
+        .then(res => console.log(res)).catch(err => console.log(err.message))
+      }
+    }
+  }
+
+  const deleteProject = (): void => {
+    axios.delete(`http://localhost:8000/projects/delete/${id}`)
     .then(res => {console.log(res); navigate('/projects')})
     .catch(err => console.log(err.message))
     
   }
 
-  useEffect(() => {
-    if (loadingData) {
-      getProjectData(id);
-      setLoadingData(false);
-    }
-    else {
-      updateProjectData()
-    }
-  }, [projectName, projectTags, projectField, projectProgress, projectDescription, projectVideo, projectLinks])
-
-  const editEntry = (pos: number) => {
-    let tempEditState = [...pageEditingState]
-    tempEditState[pos] = !tempEditState[pos]
-    setPageEditingState(tempEditState)
+  const handleDateChange = (date: Date) => {
+    setNewDate(date)
+    setNewDateStr(`${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`)
   }
 
   return (
     <div className="Project">
-      <form onSubmit={e => {e.preventDefault(); handleSubmit(); setPageEditingState([false, false, false, false, false, false, false])}}>
-        <div className='ProjectName'>
-          {pageEditingState[0] ? 
-          <>
-            <ProjectNameEntry projectName={newProjectName} changeName={setNewProjectName}/>
-            <button onClick={(e) => {e.preventDefault(); editEntry(0); setProjectName(newProjectName)}}>Done</button>
-            <button onClick={(e) => {e.preventDefault(); editEntry(0); setNewProjectName(projectName)}}>Cancel</button>
-          </>
-          :<>
-            <h1>{projectName}</h1>
-            <button onClick={(e) => {e.preventDefault(); editEntry(0)}}>Edit Name</button>
-          </>}
-        </div>
-        <div className='ProjectField'>
-          {pageEditingState[1] ?
-          <>
-            <ProjectFieldEntry projectField={newProjectField} changeField={setNewProjectField}/>
-            <button onClick={(e) => {e.preventDefault(); editEntry(1); setProjectField(newProjectField)}}>Done</button>
-            <button onClick={(e) => {e.preventDefault(); editEntry(1); setNewProjectField(projectField)}}>Cancel</button>
-          </>
-          :<>
-            <h2>{projectField}</h2>
-            <button onClick={(e) => {e.preventDefault(); editEntry(1)}}>Edit Field</button>
-          </>}
-        </div>
-        <div className='ProjectTags'>
-        {pageEditingState[2] ? 
-          <>
-            <ProjectTagsEntry projectTags={newProjectTags} changeTags={setNewProjectTags}/>
-            <button onClick={(e) => {e.preventDefault(); editEntry(2); setProjectTags(newProjectTags)}}>Done</button>
-            <button onClick={(e) => {e.preventDefault(); editEntry(2); setNewProjectTags(projectTags)}}>Cancel</button>
-          </>
-          :<>{projectTags.map((tag, index) => {
-              return <h3 key={'t'+index}>{tag}</h3>
-          })}
-          <button onClick={(e) => {e.preventDefault(); editEntry(2)}}>Edit Tags</button>
-          </>}
-        </div>
-        <div className='ProjectProgress'>
-          {pageEditingState[3] ? 
-          <>
-            <ProjectProgressEntry projectProgress={newProjectProgress} changeProgress={setNewProjectProgress}/>
-            <button onClick={(e) => {e.preventDefault(); editEntry(3); setProjectProgress(newProjectProgress)}}>Done</button>
-            <button onClick={(e) => {e.preventDefault(); editEntry(3); setNewProjectProgress(projectProgress)}}>Cancel</button>
-          </>
-          :<>
-            <h2>{projectProgress}</h2>
-            <button onClick={(e) => {e.preventDefault(); editEntry(3)}}>Edit Progress</button>
-          </>}
-        </div>
-        <div className='ProjectDescription'>
-            {pageEditingState[4] ?
-            <>
-              <ProjectDescriptionEntry projectDescription={newProjectDescription} changeDescription={setNewProjectDescription}/>
-              <button onClick={(e) => {e.preventDefault(); editEntry(4); setProjectDescription(newProjectDescription)}}>Done</button>
-              <button onClick={(e) => {e.preventDefault(); editEntry(4); setNewProjectDescription(projectDescription)}}>Cancel</button>
-            </>
-            :<>
-              {projectDescription.map((txt, index) => {
-                if (txt.textType === "header") return <h2 key={'h'+index}>{txt.text}</h2>
-                else if (txt.textType === "body") return <h3 key={'p'+index}>{txt.text}</h3>
-                else <h1>{txt}</h1>
-              })}
-            <button onClick={(e) => {e.preventDefault(); editEntry(4)}}>Edit Description</button>
-            </>
+      {loadingData ? <h1>Loading...</h1> : <>
+        {editing ? 
+          <form onSubmit={e => {e.preventDefault(); handleSubmit()}}>
+            <div className="FormInputs">
+              <div className='NonTechDiv'>
+                <div className='ProjectName'>
+                    <ProjectNameEntry name={newName} changeName={setNewName}/>
+                </div>
+                <div className='ProjectStatus'>
+                    <ProjectStatusEntry status={newStatus} changeStatus={setNewStatus}/>
+                </div>
+                <div className='ProjectDate'>
+                    <ProjectDateEntry date={newDateStr} changeDate={handleDateChange}/>
+                </div>
+                <div className='ProjectDescrption'>
+                    <ProjectDescriptionEntry description={newDescription} changeDescription={setNewDescription}/>
+                </div>
+                <div className='ProjectLinks'>
+                    <ProjectLinksEntry links={newLinks} changeLinks={setNewLinks}/>
+                </div>
+              </div>
+              <div className='ProjectTech'>
+                <ProjectTechEntry cardsData={[...techCardsData]} activeTech={newTech} changeTech={setNewTech}/>
+              </div>
+            </div>
+              <div className='SubmitButtonDiv FormSegment'>
+                <input type='submit' value='Submit'/>
+              </div>
+            { (id === "new") ? <></> :
+            <div className="EditingButtons">
+              <button onClick={e => {e.preventDefault(); window.location.reload()}}>Cancel</button>
+              <button onClick={e => {e.preventDefault(); deleteProject()}}>Delete project</button>
+            </div>
             }
-        </div>
-        <div className='ProjectVideo'>
-          {pageEditingState[5] ? 
-          <>
-            <ProjectVideoEntry projectVideo={newProjectVideo} changeVideo={setNewProjectVideo}/>
-            <button onClick={(e) => {e.preventDefault(); editEntry(5); setProjectVideo(newProjectVideo)}}>Done</button>
-            <button onClick={(e) => {e.preventDefault(); editEntry(5); setNewProjectVideo(projectVideo)}}>Cancel</button>
-          </>
-          :<>
-            <h1>{projectVideo}</h1>
-            <button onClick={(e) => {e.preventDefault(); editEntry(5)}}>Edit Video</button>
-          </>}
-        </div>
-        <div className='ProjectLinks'>
-        {pageEditingState[6] ? 
-          <>
-            <ProjectLinksEntry projectLinks={newProjectLinks} changeLinks={setNewProjectLinks}/>
-            <button onClick={(e) => {e.preventDefault(); console.log('links done'); editEntry(6); setProjectLinks(newProjectLinks)}}>Done</button>
-            <button onClick={(e) => {e.preventDefault(); console.log('links cancel'); editEntry(6); setNewProjectLinks(projectLinks)}}>Cancel</button>
-          </>
-          :<>{projectLinks.map((link, index) => {
-              return <h3 key={'l'+index}>{link}</h3>
-          })}
-          <button onClick={(e) => {e.preventDefault(); editEntry(6)}}>Edit Links</button>
-          </>}
-        </div>
-        <div className='SubmitButtonDiv FormSegment'>
-          <input type='submit' value='Commit Changes to project'/>
-        </div>
-      </form>
-      <button onClick={e => {e.preventDefault(); getProjectData(id); setPageEditingState([false, false, false, false, false, false, false])}}>Restore original project data</button>
-      <button onClick={e => {e.preventDefault(); deleteProject(id)}}>Delete project</button>
+            <Link className='NavButton' to='/projects'>
+                <p>← Back to Projects</p>
+            </Link>          
+          </form>
+        : <div className="ProjectDetails">
+            <button onClick={e => {e.preventDefault(); setEditing(true)}}>Edit project</button>
+            <h1>{projectData.name}</h1>
+            <h2>{projectData.status}</h2>
+            <h2>{projectData.date.toDateString}</h2>
+            {projectData.description.map(desc => <p className='Description'>{desc}</p>)}
+            {(projectData.links === undefined) ? <></> : projectData.links.map(link => <p className='Description'>{link.linkType}: {link.url}</p>)}
+          </div>
+        }
+        </>
+      }
     </div>
   );
 }
