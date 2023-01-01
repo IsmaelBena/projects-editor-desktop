@@ -6,12 +6,12 @@ function Home() {
 
   return (
     <div className="Home">
-      <div className='AllProjectsLink'>
-        <Link to='/projects'><div className='buttonDiv'><h1>Projects</h1></div></Link>
-      </div>
-      <div className='NewProjectLink'>
-        <Link to='/technologies'><div className="buttonDiv"><h1>Technologies</h1></div></Link>
-      </div>      
+      <Link className='LinkButton' to='/projects'>
+        <h1>Projects</h1>
+      </Link>
+      <Link className='LinkButton' to='/technologies'>
+        <h1>Technologies</h1>
+      </Link>    
     </div>
   );
 }

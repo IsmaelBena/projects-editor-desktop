@@ -1,8 +1,8 @@
 .Technologies {
     width: 100vw;
     height: 100vh;
-    background-color: aquamarine;
-    overflow-y: scroll;
+    overflow-y: hidden;
+    margin-top: 50px;
 }
 
 .TechnologyCardsContainer {
@@ -10,6 +10,16 @@
     flex-direction: row;
     justify-content: start;
     flex-wrap: wrap;
+}
+
+.AddTech {
+    background-color: grey;
+    border: 1px solid black;
+    border-radius: 5px;
+    margin: 5px;
+    padding: 5px;
+    width: max-content;
+    cursor: pointer;
 }
 
 .NewTechForm {

@@ -11,11 +11,9 @@ interface ICardData
 function ProjectCard(props: ICardData) {
 
   return (
-    <Link to={`/project/${props.id}`}>
-      <div className="ProjectCard">
-          <h2>{props.name}</h2>
-          <p>{props.id}</p>
-      </div>
+    <Link className="ProjectCard" to={`/project/${props.id}`}>
+      <h2>{props.name}</h2>
+      <p>{props.id}</p>
     </Link>
   );
 }

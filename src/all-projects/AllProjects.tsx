@@ -30,7 +30,7 @@ function AllProjects() {
   const [loadingData, setLoadingData] = useState<boolean>(true);
 
   const getData = async () => {
-    axios.get('http://localhost:8000/projects')
+    axios.get('https://ismaelbena-api.online/projects')
     .then(res => {
       setResData(res.data)
       let tempCardData: ICard[] = res.data.map((value: IProjectEntry) => {
@@ -49,19 +49,15 @@ function AllProjects() {
 
   return (
     <div className="AllProjects">
-        <Link to='/'>
-          <div className='HomeLink'>
-            <p>← Back to home screen</p>
-          </div>
-        </Link>
-        <Link to='/project/new'>
-          <div className='HomeLink'>
-            <p><b>+</b>New Project</p>
-          </div>
-        </Link>
-      {!loadingData ? <>
+      <Link className='NavButton' to='/'>
+        ← Back to home screen
+      </Link>
+      <Link className='NewProjectBtn' to='/project/new'>
+          <b>+</b> New Project
+      </Link>
+      {!loadingData ? <div className="ProjectCardsContainer">
         {projectCardsData.map((card) => <ProjectCard id={card.id} name={card.name}/>)}
-      </> : <p>loading cards</p>
+      </div> : <p>loading cards</p>
       }
     </div>
   );

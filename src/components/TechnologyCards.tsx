@@ -12,7 +12,8 @@ interface ITechCardData
   image: {
     url?: string,
     fileName: string
-  }
+  },
+  authToken: string
 }
 
 function TechnologyCard(props: ITechCardData) {
@@ -27,7 +28,7 @@ function TechnologyCard(props: ITechCardData) {
   const [newImgFileName, setNewImgFileName] = useState<string>(props.image.fileName)
 
   const putNewValues = async (name: string, techType: string, imgUrl: string, imgFileName: string) => {
-    axios.put(`http://localhost:8000/technologies/edit/${props._id}`, !(newImgUrl === "") ? 
+    axios.put(`https://ismaelbena-api.online/technologies/edit/${props._id}`, !(newImgUrl === "") ? 
     {name: name, techType: techType, image: {url: imgUrl, fileName: imgFileName}} : 
     {name: name, techType: techType, image: {fileName: imgFileName}})
     .then(res => {
@@ -54,7 +55,7 @@ function TechnologyCard(props: ITechCardData) {
 
   const confirmDelete = () => {
     if (window.confirm(`Are You sure you want to delete ${props.name}?`)) {
-      axios.delete(`http://localhost:8000/technologies/delete/${props._id}`)
+      axios.delete(`https://ismaelbena-api.online/technologies/delete/${props._id}`)
       .then(res => {
           console.log(`${props.name} has been deleted`, res)
           window.location.reload()

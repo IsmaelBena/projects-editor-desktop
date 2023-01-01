@@ -3,19 +3,67 @@
   padding: 0;
   margin: 0;
   overflow: hidden;
+  box-sizing: border-box;
+}
+
+.App {
+  background-color: #E7E7E7;
+  padding-top: 50px;
+  transition: 0.5s;
+}
+
+.AuthenticationTokenBanner {
+  width: 100%;
+  height: 50px;
+  position: absolute;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 0.5s;
+  border-bottom: 2px solid black;
+}
+
+.incorrectTokenFlash {
+  background-color: red;
+}
+
+.hiddenBanner {
+  transform: translateY(-50px);
+}
+
+.hiddenApp {
+  padding-top: 0px;
+}
+
+.TokenButton {
+  height: 25px;
+}
+
+.TokenLabel {
+  width: max-content;
+  height: max-content;
+}
+
+.TokenLabel > input {
+  margin-left: 10px;
+  width: 700px;
+  height: 25px;
+}
+
+.ToggleTokenBannerBtn {
+  position: absolute;
+  top: 12.5px;
+  right: 10px;
 }
 
 .NavButton {
-  background-color: blueviolet;
+  position: absolute;
+  top: 0px;
+  background-color: grey;
+  border: 1px solid black;
   border-radius: 5px;
   margin: 5px;
   padding: 5px;
   width: max-content;
-}
-
-.NavButton > * {
-  color: white;
-}
-
-.NavButton > h2 {
 }

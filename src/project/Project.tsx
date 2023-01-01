@@ -57,7 +57,6 @@ function Project() {
 
   const [newName, setNewName] = useState<string>("")
   const [newDate, setNewDate] = useState<Date>(new Date(2000,1,12))
-  const [newDateStr, setNewDateStr] = useState<string>(`2000-01-12`)
   const [newStatus, setNewStatus] = useState<string>("unselected")
   const [newTech, setNewTech] = useState<string[]>([])
   const [newDescription, setNewDescription] = useState<string[]>([])
@@ -68,7 +67,7 @@ function Project() {
     if (id === "new") {
       setEditing(true)
     } else {
-      axios.get(`http://localhost:8000/projects/${id}`)
+      axios.get(`https://ismaelbena-api.online/projects/${id}`)
       .then(res => {
         setProjectData({...res.data});
         setNewName(res.data.name)
@@ -79,7 +78,7 @@ function Project() {
         setNewLinks(res.data.links)
       }) 
     }
-    axios.get("http://localhost:8000/technologies")
+    axios.get("https://ismaelbena-api.online/technologies")
     .then(res => {
       setTechData([...res.data]);
       let tempCards = res.data.map((data: ITechData) => {
@@ -139,11 +138,11 @@ function Project() {
     if (!checkFields()) console.log("cannot submit yet, some entry is not valid")
     else {
       if (newData.links !== undefined) {
-        axios.post(`http://localhost:8000/projects`, newData)
+        axios.post(`https://ismaelbena-api.online/projects`, newData)
         .then(res => console.log(res)).catch(err => console.log(err.message))
       } else {
         delete newData.links
-        axios.post(`http://localhost:8000/projects`, newData)
+        axios.post(`https://ismaelbena-api.online/projects`, newData)
         .then(res => console.log(res)).catch(err => console.log(err.message))
       }
     }
@@ -154,18 +153,18 @@ function Project() {
     if (!checkFields()) console.log("cannot submit yet, some entry is not valid")
     else {
       if (newData.links !== undefined) {
-        axios.put(`http://localhost:8000/projects/edit/${id}`, newData)
+        axios.put(`https://ismaelbena-api.online/projects/edit/${id}`, newData)
         .then(res => console.log(res)).catch(err => console.log(err.message))
       } else {
         delete newData.links
-        axios.put(`http://localhost:8000/projects/edit/${id}`, newData)
+        axios.put(`https://ismaelbena-api.online/projects/edit/${id}`, newData)
         .then(res => console.log(res)).catch(err => console.log(err.message))
       }
     }
   }
 
   const deleteProject = (): void => {
-    axios.delete(`http://localhost:8000/projects/delete/${id}`)
+    axios.delete(`https://ismaelbena-api.online/projects/delete/${id}`)
     .then(res => {console.log(res); navigate('/projects')})
     .catch(err => console.log(err.message))
     
@@ -173,7 +172,6 @@ function Project() {
 
   const handleDateChange = (date: Date) => {
     setNewDate(date)
-    setNewDateStr(`${date.getFullYear()}-${date.getMonth()}-${date.getDate()}`)
   }
 
   return (
@@ -190,7 +188,7 @@ function Project() {
                     <ProjectStatusEntry status={newStatus} changeStatus={setNewStatus}/>
                 </div>
                 <div className='ProjectDate'>
-                    <ProjectDateEntry date={newDateStr} changeDate={handleDateChange}/>
+                    <ProjectDateEntry date={newDate} changeDate={handleDateChange}/>
                 </div>
                 <div className='ProjectDescrption'>
                     <ProjectDescriptionEntry description={newDescription} changeDescription={setNewDescription}/>
@@ -214,14 +212,18 @@ function Project() {
             }
             <Link className='NavButton' to='/projects'>
                 <p>← Back to Projects</p>
-            </Link>          
+            </Link>
           </form>
         : <div className="ProjectDetails">
             <button onClick={e => {e.preventDefault(); setEditing(true)}}>Edit project</button>
             <h1>{projectData.name}</h1>
             <h2>{projectData.status}</h2>
-            <h2>{projectData.date.toDateString}</h2>
-            {projectData.description.map(desc => <p className='Description'>{desc}</p>)}
+            <h2>{projectData.date}</h2>
+            <ul className='DescriptionUL'>
+              {projectData.description.map((desc, index) => 
+                <li id={index.toString()}>{desc}</li>
+              )}
+            </ul>
             {(projectData.links === undefined) ? <></> : projectData.links.map(link => <p className='Description'>{link.linkType}: {link.url}</p>)}
           </div>
         }

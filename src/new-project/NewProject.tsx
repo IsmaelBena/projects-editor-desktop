@@ -20,7 +20,7 @@ interface IProjectEntry {
     otherLinks: string[]
 }
 
-function NewProject() {
+function NewProject(props: {authToken: string}) {
 
     const navigate = useNavigate();
 
@@ -97,7 +97,7 @@ function NewProject() {
         else if (!checkFields()) console.log("cannot submit yet, some entry is not valid")
         else {
             console.log(projectEntry);
-            axios.post('http://localhost:8000/projects/project', projectEntry).then(res => {console.log(res); navigate('/')}).catch(err => console.log(err.message))
+            axios.post('https://ismaelbena-api.online/projects/project', projectEntry).then(res => {console.log(res); navigate('/')}).catch(err => console.log(err.message))
         }
     }
 

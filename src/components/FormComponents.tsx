@@ -96,7 +96,7 @@ function ProjectTechEntry(props: ITechData) {
 // =========================================================== Project Date ======================================================================================
 
 interface IProjectDate {
-    date: string,
+    date: Date,
     changeDate: (arg: Date) => void
 }
 
@@ -105,8 +105,8 @@ function ProjectDateEntry(props: IProjectDate) {
     return (
         <div className='ProjectDateEntry FormSegment'>
             <label>
-                Date: {props.date}
-                <input type="date" value={props.date} onChange={e => props.changeDate(new Date(e.target.value))} />
+                Date: {props.date.toISOString().split('T')[0]}
+                <input type="date" onChange={e => props.changeDate(new Date(e.target.value))} />
             </label>
         </div>
     );
