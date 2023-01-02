@@ -1,4 +1,59 @@
-.FormSegment
+.Inline {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+}
+
+/*-----------------  General  ---------------------------*/
+
+.Column {
+    display: flex;
+    flex-direction: column;
+}
+
+.Start {
+    justify-content: start;
+    align-items: flex-start;
+}
+
+.FormContainer {
+    margin: 10px;
+}
+
+/*-----------------  Description  ---------------------------*/
+
+.DescriptionUL {
+    list-style-type: circle;
+    list-style-position: inside;
+    font-size: 20px;
+}
+
+#DescriptionEntriesContainer {
+    width: 40%;
+}
+
+.DescriptionEntry {
+    width: 100%;
+    resize: vertical;
+}
+
+.RemoveBTN {
+    width: max-content;
+    padding: 3px;
+    margin: 2px;
+    flex-shrink: 0;
+}
+
+/*------------------------ Tech ----------------------*/
+
+#ProjectTechEntry > *{
+    border: 2px solid black;
+    width: 50%;
+    flex-wrap: wrap;
+}
+
+
+/*.FormSegment
 {
     padding: 10px;
     font-size: 28px;
@@ -6,13 +61,6 @@
     flex-direction: row;
     align-items: center;
     margin: 10px;
-}
-
-.FormSegment label
-{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
 }
 
 .ProjectNameEntry input
@@ -31,14 +79,6 @@
     margin: 10px;
 }
 
-.ProjectTags
-{
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-}
-
 .ProjectTags input
 {
     height: 42px;
@@ -48,9 +88,6 @@
 
 .TagsContainer
 {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
     flex-wrap: wrap;
     width: 500px;
 }
@@ -87,9 +124,6 @@
 
 .DescriptionEntry
 {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
     justify-content: center;
     font-size: large;
 }
@@ -172,4 +206,4 @@
     flex-wrap: wrap;
     border-top: 1px solid black;
     padding-top: 5px;
-}
+}*/

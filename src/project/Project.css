@@ -6,40 +6,44 @@
     flex-direction: row;
 }
 
-.Project > form
+.ProjectForm
 {
+    border: 2px solid black;
     width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
+    justify-content: center;
 }
 
-.NonTechDiv {
-    width: max-content;
-}
-
-.NonTechDiv > * {
-    width: max-content;
-}
-
-.FormInputs {
+.Inline {
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-}
-
-.ProjectTech {
-    width: max-content;
-}
-
-.EditingButtons {
-    margin-left: 20px;
+    justify-content: space-around;
 }
 
 /*===============================*/
 
-.ProjectDetails {
+.ProjectContainer {
     padding: 5px;
+}
+
+.ProjectDetails {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 75vw;
+    height: 75vh;
+    transform: translate(-50%, -50%);
+    border: 3px solid black;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+}
+
+.ProjectDetails > * {
+    margin: 10px;
 }
 
 .ProjectDetails > h1, h2{
@@ -49,4 +53,5 @@
 .DescriptionUL {
     list-style-type: circle;
     list-style-position: inside;
+    font-size: 20px;
 }

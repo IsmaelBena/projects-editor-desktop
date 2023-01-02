@@ -70,7 +70,7 @@ function ProjectTechEntry(props: ITechData) {
     }
 
     const renderActiveTech = () => {
-        return <div className="ActiveTech">
+        return <div className="ActiveTech Inline">
             {props.activeTech.map((tech, index) =>
                 <div onClick={() => {props.changeTech(props.activeTech.filter((Ftech) => Ftech !== tech))}}>
                     <TechnologyMiniCard id={tech} name={findName(tech)} redBG={""}/>
@@ -80,9 +80,9 @@ function ProjectTechEntry(props: ITechData) {
     }
 
     return (
-        <div className="ProjectTechEntry FormSegment">
+        <div id='ProjectTechEntry' className="FormSegment">
             {renderActiveTech()}
-            <div className="AllTech">
+            <div className="AllTech Inline">
             {props.cardsData.map((tech) => 
                 <div onClick={() => {props.changeTech([...props.activeTech, tech.id])}}>
                     <TechnologyMiniCard id={tech.id} name={tech.name} redBG={(props.activeTech.find(Ltech => tech.id === Ltech) !== undefined) ? " redBG" : ""}/>
@@ -123,29 +123,32 @@ interface IProjectDescription {
 function ProjectDescriptionEntry(props: IProjectDescription) {
 
     const renderDescInputs = () => {
-        return <div className='DescriptionEntriesContainer'>
-            {props.description.map((desc, index) => 
-                <div key={index.toString()}>
-                    <label className='DescriptionEntry'>
-                        <div className='DescTxtAndRemoveDiv'>
-                            Text:
-                            <button onClick={e => {e.preventDefault(); props.changeDescription(props.description.filter((currentDesc, i) => i !== index))}}>Remove</button>
-                        </div>
-                        <div className='DescContentEntryDiv'>
-                            <textarea value={desc} onChange={e => props.changeDescription(props.description.map((currentDesc, i) => {
+        return <div id='DescriptionContainer' className='Inline'>
+            <div id='DescriptionEntriesContainer' className='Column FormContainer'>
+                {props.description.map((desc, index) => 
+                    <div key={index.toString()}>
+                        <label>
+                            <textarea className='DescriptionEntry' value={desc} onChange={e => props.changeDescription(props.description.map((currentDesc, i) => {
                                 if (i === index) {currentDesc = e.target.value} return currentDesc
                             }))}/>
-                            {desc}
-                        </div>
-                    </label>
-                </div>
-            )}
+                        </label>
+                    </div>
+                )}
+                <button onClick={e => {e.preventDefault(); props.changeDescription([...props.description, ""])}}>add to description</button>
+            </div>         
+            <ul className='Column Start DescriptionUL FormContainer'>
+                {props.description.map((desc, index) => 
+                    <div className='Inline Start' key={index.toString()}>
+                        <button className='RemoveBTN' onClick={e => {e.preventDefault(); props.changeDescription(props.description.filter((currentDesc, i) => i !== index))}}>Remove</button>
+                        <li id={index.toString()}>{desc}</li>
+                    </div>
+                )}
+            </ul>
         </div>
     }
 
     return (
-        <div className='ProjectDescription FormSegment'>
-            <button onClick={e => {e.preventDefault(); props.changeDescription([...props.description, ""])}}>add to description</button>
+        <div id='ProjectDescription' className='Inline'>
             {renderDescInputs()}
         </div>
     );
@@ -178,7 +181,7 @@ function ProjectLinksEntry(props: IProjectLinks) {
     }
 
     return (
-        <div className='FormSegment ProjectLinks'>
+        <div className='ProjectLinks'>
             <label>
                 Type:
                 <input type='text' value={newLinkType} onChange={e => setNewLinkType(e.target.value)}/>

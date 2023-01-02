@@ -13,11 +13,8 @@ function TechnologyMiniCard(props: ITechCardData) {
 
   return (
     <div className={"TechnologyMiniCard"+props.redBG}>
-        <div className="techCardID">
-            <p>id: {props.id}</p>
-        </div>
         <div className="techCardName">
-            <h3>Name: {props.name}</h3>
+            <h3>{props.name}</h3>
         </div>
     </div>
   );

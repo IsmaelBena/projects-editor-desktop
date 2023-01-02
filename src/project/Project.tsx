@@ -71,7 +71,7 @@ function Project() {
       .then(res => {
         setProjectData({...res.data});
         setNewName(res.data.name)
-        setNewDate(res.data.date)
+        setNewDate(new Date(res.data.date))
         setNewStatus(res.data.status)
         setNewTech(res.data.tech)
         setNewDescription(res.data.description)
@@ -178,32 +178,34 @@ function Project() {
     <div className="Project">
       {loadingData ? <h1>Loading...</h1> : <>
         {editing ? 
-          <form onSubmit={e => {e.preventDefault(); handleSubmit()}}>
+          <form className='ProjectForm' onSubmit={e => {e.preventDefault(); handleSubmit()}}>
             <div className="FormInputs">
-              <div className='NonTechDiv'>
-                <div className='ProjectName'>
-                    <ProjectNameEntry name={newName} changeName={setNewName}/>
-                </div>
+              <div className='ProjectName Inline'>
+                  <ProjectNameEntry name={newName} changeName={setNewName}/>
+              </div>
+              <div className='Inline'>
                 <div className='ProjectStatus'>
                     <ProjectStatusEntry status={newStatus} changeStatus={setNewStatus}/>
                 </div>
-                <div className='ProjectDate'>
+                <div className='ProjectDate InlineInputs'>
                     <ProjectDateEntry date={newDate} changeDate={handleDateChange}/>
                 </div>
-                <div className='ProjectDescrption'>
-                    <ProjectDescriptionEntry description={newDescription} changeDescription={setNewDescription}/>
-                </div>
+              </div>
+              <div className='ProjectDescrption Inline'>
+                  <ProjectDescriptionEntry description={newDescription} changeDescription={setNewDescription}/>
+              </div>
+              <div className='Inline'>                
                 <div className='ProjectLinks'>
                     <ProjectLinksEntry links={newLinks} changeLinks={setNewLinks}/>
                 </div>
-              </div>
-              <div className='ProjectTech'>
-                <ProjectTechEntry cardsData={[...techCardsData]} activeTech={newTech} changeTech={setNewTech}/>
+                <div className='ProjectTech'>
+                  <ProjectTechEntry cardsData={[...techCardsData]} activeTech={newTech} changeTech={setNewTech}/>
+                </div>
               </div>
             </div>
-              <div className='SubmitButtonDiv FormSegment'>
-                <input type='submit' value='Submit'/>
-              </div>
+            <div className='SubmitButtonDiv FormSegment'>
+              <input type='submit' value='Submit'/>
+            </div>
             { (id === "new") ? <></> :
             <div className="EditingButtons">
               <button onClick={e => {e.preventDefault(); window.location.reload()}}>Cancel</button>
@@ -214,17 +216,19 @@ function Project() {
                 <p>← Back to Projects</p>
             </Link>
           </form>
-        : <div className="ProjectDetails">
-            <button onClick={e => {e.preventDefault(); setEditing(true)}}>Edit project</button>
-            <h1>{projectData.name}</h1>
-            <h2>{projectData.status}</h2>
-            <h2>{projectData.date}</h2>
-            <ul className='DescriptionUL'>
-              {projectData.description.map((desc, index) => 
-                <li id={index.toString()}>{desc}</li>
-              )}
-            </ul>
-            {(projectData.links === undefined) ? <></> : projectData.links.map(link => <p className='Description'>{link.linkType}: {link.url}</p>)}
+        : <div className="ProjectContainer">
+            <div className='NavButton' onClick={e => {e.preventDefault(); setEditing(true)}}>Edit project</div>
+            <div className="ProjectDetails">
+              <h1>{projectData.name}</h1>
+              <h2>{projectData.status}</h2>
+              <h2>{projectData.date.toString().split('T')[0]}</h2>
+              <ul className='DescriptionUL'>
+                {projectData.description.map((desc, index) => 
+                  <li id={index.toString()}>{desc}</li>
+                )}
+              </ul>
+              {(projectData.links === undefined) ? <></> : projectData.links.map(link => <p className='Description'>{link.linkType}: <a href={link.url}>{link.url}</a></p>)}
+            </div>
           </div>
         }
         </>
